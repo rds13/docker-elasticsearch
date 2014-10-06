@@ -1,11 +1,13 @@
-FROM base
+FROM ubuntu:trusty
 MAINTAINER Arcus "http://arcus.io"
-RUN echo "deb http://archive.ubuntu.com/ubuntu quantal main universe multiverse" > /etc/apt/sources.list
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-6-jre wget
-ENV JAVA_HOME /usr/lib/jvm/java-6-openjdk-amd64
-RUN (cd /tmp && wget -nv https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.0.1.tar.gz -O pkg.tar.gz && tar zxf pkg.tar.gz && mv elasticsearch-* /opt/elasticsearch)
-RUN rm -rf /tmp/*
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget openjdk-7-jre-headless
+ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
+RUN cd /opt \
+   && wget -nv https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.1.tar.gz -O elasticsearch.tar.gz \
+   && tar zxf elasticsearch.tar.gz \
+   && mv elasticsearch-* /opt/elasticsearch \
+   && rm elasticsearch.tar.gz
 
 EXPOSE 9200
 EXPOSE 9300
